@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>LoveJoy</title>
+
+    <!-- load bootstrap 5 -->
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_messages %}
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'fonts/material-icon/css/material-design-iconic-font.min.css' %}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a href="{% url 'home' %}" class="navbar-brand" style="margin-left: 30px; font-size: 30px"><b style="color: #33cabb">Love</b>joy</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                      {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'request_evaluation:create_request' %}">Request</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="d-flex">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'signout' %}" type="button" style="margin-right: 20px">logout</a>
+                        <span type="button">Hi {{ user }}</span>
+                    {% else %}
+                        <button class="btn btn-default" type="button" style="margin-right: 20px"><a href="{% url 'signup' %}">SignUp</a></button>
+                        <button class="btn btn-default" type="button"><a href="{% url 'signin' %}">SignIn</a></button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+     <div class="main">
+
+         <!-- Sign up form -->
+         <section class="signup">
+             <div class="container">
+                 <div class="signup-content">
+                     <div class="signup-form">
+                         <h4 class="form-title">Create Request</h4>
+
+                         {% for message in messages %}
+                             <div style="margin-bottom: 20px">
+                                 <span style="color: #e72734">{{ message }}</span>
+                             </div>
+                         {% endfor %}
+
+                         <form action="{% url 'request_evaluation:create_request' %}" method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
+                             {% csrf_token %}
+                             <div class="mb-3">
+                                 <textarea class="form-control" rows="5" id="comment" name="text" required placeholder="write here.."></textarea>
+                             </div>
+                             <div class="mb-3">
+                                 <select class="form-select" name="medium" required>
+                                     <option value="" selected disabled>select preferred contact medium</option>
+                                     <option>Email</option>
+                                     <option>Phone</option>
+                                 </select>
+                             </div>
+                             <div class="mb-3">
+{#                                 <label for="file">Upload File</label>#}
+                                 <input type="file" name="image" id="file" class="form-control" accept="image/*" required placeholder="upload object image">
+                             </div>
+                             <button type="submit" class="btn btn-primary">Submit</button>
+                         </form>
+                     </div>
+                     <div class="signup-image">
+                         <figure><img src="{% static 'images/request.jpg' %}" alt="sing up image"></figure>
+                     </div>
+                 </div>
+             </div>
+         </section>
+
+
+     </div>
+</body>
+</html>

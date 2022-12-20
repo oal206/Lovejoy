@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+    Welcome to LoveJoy Login
+
+    Hello {{ name }}
+
+    please confirm your email ny clicking on the following link
+
+    confirmation Link: http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

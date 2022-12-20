@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>LoveJoy</title>
+
+    <!-- load bootstrap 5 -->
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_messages %}
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a href="{% url 'home' %}" class="navbar-brand" style="margin-left: 30px; font-size: 30px"><b style="color: #33cabb">Love</b>joy</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'request_evaluation:create_request' %}">Request</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="d-flex">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'signout' %}" type="button" style="margin-right: 20px">logout</a>
+                        <span type="button">Hi {{ user }}</span>
+                    {% else %}
+                        <button class="btn btn-default" type="button" style="margin-right: 20px"><a href="{% url 'signup' %}">SignUp</a></button>
+                        <button class="btn btn-default" type="button"><a href="{% url 'signin' %}">SignIn</a></button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% if user.is_superuser %}
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h2 class="mb-5 mt-3" style="text-align: center; color: #33cabb">User Evaluation Requests</h2>
+                    <table class="table" style="vertical-align: middle">
+                        <thead>
+                        <tr>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Contact</th>
+                            <th scope="col">Query Text</th>
+                            <th scope="col">Image</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for evaluation_request in evaluation_requests %}
+                            <tr>
+                                <th scope="row">{{ evaluation_request.author.username }}</th>
+                                <td>{{ evaluation_request.contact_via }}</td>
+                                <td>{{ evaluation_request.text }}</td>
+                                <td><img src="{{ evaluation_request.image.url }}" style="height: 8%; width: 8%; border-radius: 50%"></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    {% endif %}
+
+
+</body>
+</html>
