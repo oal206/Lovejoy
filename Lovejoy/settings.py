@@ -35,9 +35,9 @@ EMAIL_PORT = EMAIL_PORT
 SECRET_KEY = "django-insecure-!@2ih0s_&a6wlkr+up%12x@%ohb4_#8*c7uqs@bwl3fxely-m*"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -97,6 +97,8 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
