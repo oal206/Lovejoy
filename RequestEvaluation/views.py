@@ -19,7 +19,7 @@ def create_request(request):
             medium = request.POST.get('medium')
             image = request.FILES['image']
 
-            extension = str(image).split('.')[-1]
+            extension = str(image).split('.')[-1].lower()
             allowed_extensions = ['jpg', 'jpeg', 'png', 'gif']
             if extension not in allowed_extensions:
                 messages.error(request, "Only Image of type jpg, png, and gif is allowed")
